@@ -1,4 +1,6 @@
 pandas
 numpy
 torch
+torchvision
 sklearn
+altair
