@@ -9,7 +9,7 @@ import altair as alt
 
 @st.cache
 def get_MNIST(train=False):
-    return MNIST(root='/home/ubuntu/datasets',train=train,download=True, transform=transforms.Compose([transforms.ToTensor()]))
+    return MNIST(root='~/',train=train,download=True, transform=transforms.Compose([transforms.ToTensor()]))
 
 @st.cache
 def get_PCATSNE(data_loader,b_size=64,subset=1000,pca_components=50):
