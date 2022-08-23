@@ -45,8 +45,8 @@ def get_TSNE(b_size=64,subset=10000):
 
 
 st.write('MNIST embedding visualization experiment')    
-b_size=128
-subset= 60000
+b_size=60000
+subset= 10000
 vis_data = get_TSNE(b_size=b_size,subset=subset)
 
 fig = plt.figure()
