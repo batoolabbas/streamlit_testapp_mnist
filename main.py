@@ -13,7 +13,9 @@ def get_MNIST(train=False):
     return MNIST(root='~/',train=train,download=True, transform=transforms.Compose([transforms.ToTensor()]))
 
 @st.cache
-def get_PCATSNE(data_loader,b_size=64,subset=10000,pca_components=50):
+def get_PCATSNE(b_size=64,subset=10000,pca_components=50):
+    ds = get_MNIST()
+    data_loader = torch.utils.data.DataLoader(ds, batch_size=b_size)
     img, label = next(iter(data_loader))
     img = img.view((b_size,-1))
     label = label.view((-1))
@@ -29,9 +31,7 @@ st.write('MNIST embedding visualization experiment')
 b_size=128
 cn = None
 
-ds = get_MNIST()
-data_loader = torch.utils.data.DataLoader(ds, batch_size=b_size)
-vis_data = get_PCATSNE(data_loader,b_size=b_size,subset=10000,pca_components=cn)
+vis_data = get_PCATSNE(b_size=b_size,subset=10000,pca_components=cn)
 
 fig = plt.gcf()
 ax = fig.subplots()
