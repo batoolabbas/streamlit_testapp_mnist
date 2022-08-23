@@ -19,7 +19,7 @@ def get_model(idx=0):
 @st.cache
 def get_MNIST(train=False):
     _, val_preprocess = get_model()
-    return MNIST(root='~/',train=train,download=True, transform=val_preprocess)
+    return MNIST(root='~/',train=train,download=False, transform=val_preprocess)
 
 @st.cache
 def get_loader(batch_size=32):
