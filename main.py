@@ -34,13 +34,16 @@ def plot_tsne(ds,b_size,cn):
     fig = plt.gcf()
     ax = fig.subplots()
     ch_plt = sns.scatterplot(data=vis_data,x="x",y="y",hue="label",ax=ax)
-    st.pyplot(fig, use_container_width=True)
+    return fig
 
 ds = get_MNIST()
 b_size=st.sidebar.slider("Number of samples", min_value=1,max_value=len(ds),value=128)
 cn = st.sidebar.slider("Number of features",min_value=1,max_value=min(b_size,28*28),value=b_size)
-plot_tsne(ds,b_size=b_size,cn=cn)
 
-st.sidebar.button("Plot",on_click=plot_tsne,args=(b_size,cn))
+if st.sidebar.button("Plot"):
+    fig = plot_tsne(ds,b_size=b_size,cn=cn)
+    st.pyplot(fig, use_container_width=True)
+
+
 
 
