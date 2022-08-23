@@ -3,4 +3,5 @@ numpy
 torch
 torchvision
 sklearn
-altair
+matplotlib
+seaborn
