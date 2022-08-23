@@ -46,7 +46,6 @@ def get_TSNE(b_size=64,subset=10000):
 
 st.write('MNIST embedding visualization experiment')    
 b_size=128
-cn = 50
 subset= 60000
 vis_data = get_TSNE(b_size=b_size,subset=subset)
 
@@ -57,7 +56,32 @@ ch_plt.set(title='TSNE without PCA')
 print('sending to streamlit')
 st.pyplot(fig, use_container_width=True)
 
-vis_data = get_PCATSNE(b_size=b_size,subset=subset,pca_components=cn)
+vis_data = get_PCATSNE(b_size=b_size,subset=subset,pca_components=400)
+fig = plt.figure()
+ax = fig.subplots()
+ch_plt = sns.scatterplot(data=vis_data,x="x",y="y",hue="label",ax=ax,palette='Spectral')
+ch_plt.set(title='TSNE after PCA to 400 components')
+print('sending to streamlit')
+st.pyplot(fig, use_container_width=True)
+
+vis_data = get_PCATSNE(b_size=b_size,subset=subset,pca_components=200)
+fig = plt.figure()
+ax = fig.subplots()
+ch_plt = sns.scatterplot(data=vis_data,x="x",y="y",hue="label",ax=ax,palette='Spectral')
+ch_plt.set(title='TSNE after PCA to 200 components')
+print('sending to streamlit')
+st.pyplot(fig, use_container_width=True)
+
+
+vis_data = get_PCATSNE(b_size=b_size,subset=subset,pca_components=100)
+fig = plt.figure()
+ax = fig.subplots()
+ch_plt = sns.scatterplot(data=vis_data,x="x",y="y",hue="label",ax=ax,palette='Spectral')
+ch_plt.set(title='TSNE after PCA to 100 components')
+print('sending to streamlit')
+st.pyplot(fig, use_container_width=True)
+
+vis_data = get_PCATSNE(b_size=b_size,subset=subset,pca_components=50)
 fig = plt.figure()
 ax = fig.subplots()
 ch_plt = sns.scatterplot(data=vis_data,x="x",y="y",hue="label",ax=ax,palette='Spectral')
@@ -65,6 +89,10 @@ ch_plt.set(title='TSNE after PCA to 50 components')
 print('sending to streamlit')
 st.pyplot(fig, use_container_width=True)
 
-
-
-
+vis_data = get_PCATSNE(b_size=b_size,subset=subset,pca_components=25)
+fig = plt.figure()
+ax = fig.subplots()
+ch_plt = sns.scatterplot(data=vis_data,x="x",y="y",hue="label",ax=ax,palette='Spectral')
+ch_plt.set(title='TSNE after PCA to 25 components')
+print('sending to streamlit')
+st.pyplot(fig, use_container_width=True)
