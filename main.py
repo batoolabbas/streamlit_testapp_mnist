@@ -28,20 +28,20 @@ def get_PCATSNE(data_loader,b_size=64,subset=1000,pca_components=50):
 st.write('MNIST embedding visualization experiment')    
 
 @st.cache
-def plot_tsne(ds,b_size,cn):
-    data_loader = torch.utils.data.DataLoader(ds, batch_size=b_size)
+def plot_tsne(b_size,cn):
+    ds = get_MNIST()
+    data_loader = torch.utils.data.DataLoader(ds, batch_size=len(ds))
     vis_data = get_PCATSNE(data_loader,b_size=b_size,pca_components=cn)
     fig = plt.gcf()
     ax = fig.subplots()
     ch_plt = sns.scatterplot(data=vis_data,x="x",y="y",hue="label",ax=ax)
     return fig
 
-ds = get_MNIST()
-b_size=st.sidebar.slider("Number of samples", min_value=1,max_value=len(ds),value=128)
-cn = st.sidebar.slider("Number of features",min_value=1,max_value=min(b_size,28*28),value=b_size)
+b_size=st.sidebar.slider("Number of samples", min_value=1,max_value=10000,value=128)
+cn = st.sidebar.slider("Number of features",min_value=1,max_value=28*28,value=b_size)
 
 #if st.sidebar.button("Plot"):
-fig = plot_tsne(ds,b_size=b_size,cn=cn)
+fig = plot_tsne(b_size=b_size,cn=cn)
 st.pyplot(fig, use_container_width=True)
 
 
