@@ -33,6 +33,6 @@ vis_data = get_PCATSNE(mnist_test,b_size=b_size)
 
 fig = plt.figure()
 ax = fig.add_subplot()
-ch_plt = sns.scatter(data=vis_data,x="x",y="y",hue="label",ax=ax)
+ch_plt = sns.scatterplot(data=vis_data,x="x",y="y",hue="label",ax=ax)
 st.pyplot(fig, use_container_width=True)
 
