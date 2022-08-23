@@ -27,11 +27,11 @@ def get_PCATSNE(data_loader,b_size=64,subset=10000,pca_components=50):
 
 st.write('MNIST embedding visualization experiment')    
 b_size=128
-cn = 100
+cn = None
 
 ds = get_MNIST()
 data_loader = torch.utils.data.DataLoader(ds, batch_size=b_size)
-vis_data = get_PCATSNE(data_loader,b_size=b_size,subset=5000,pca_components=cn)
+vis_data = get_PCATSNE(data_loader,b_size=b_size,subset=10000,pca_components=cn)
 
 fig = plt.gcf()
 ax = fig.subplots()
