@@ -40,9 +40,9 @@ ds = get_MNIST()
 b_size=st.sidebar.slider("Number of samples", min_value=1,max_value=len(ds),value=128)
 cn = st.sidebar.slider("Number of features",min_value=1,max_value=min(b_size,28*28),value=b_size)
 
-if st.sidebar.button("Plot"):
-    fig = plot_tsne(ds,b_size=b_size,cn=cn)
-    st.pyplot(fig, use_container_width=True)
+#if st.sidebar.button("Plot"):
+fig = plot_tsne(ds,b_size=b_size,cn=cn)
+st.pyplot(fig, use_container_width=True)
 
 
 
