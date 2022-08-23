@@ -7,24 +7,26 @@ from sklearn.decomposition import PCA
 import pandas as pd
 import altair as alt
 
-b_size = 64
-mnist_test = torch.utils.data.DataLoader(MNIST(root='/home/ubuntu/datasets',train=False,download=True, transform=transforms.Compose([transforms.ToTensor()])), batch_size=b_size)
+@st.cache
+def get_MNIST(train=False):
+    return MNIST(root='/home/ubuntu/datasets',train=train,download=True, transform=transforms.Compose([transforms.ToTensor()]))
 
-img, label = next(iter(mnist_test))
-img = img.view((b_size,-1))
-label = label.view((-1))
-print(img.shape)
-print(label.shape)
+@st.cache
+def get_PCATSNE(data_loader,b_size=64,subset=1000,pca_components=50):
+    img, label = next(iter(data_loader))
+    img = img.view((b_size,-1))
+    label = label.view((-1))
+    subset_x = img[:subset]
+    subset_y = label[:subset]
+    pca_k = PCA(n_components=pca_components).fit_transform(subset_x)
+    pca_tsne = TSNE(random_state=40,n_components=2,verbose=True).fit_transform(pca_k)
 
+    vis_data = pd.DataFrame(data={'x':pca_tsne[:,0],'y':pca_tsne[:,1],'label':subset_y})
+    return vis_data
 
-subset_x = img[:1000]
-subset_y = label[:1000]
-
-pca_50 = PCA(n_components=50).fit_transform(subset_x)
-pca_tsne = TSNE(random_state=40,n_components=2,verbose=True).fit_transform(pca_50)
-
-print(label.shape)
-vis_data = pd.DataFrame(data={'x':pca_tsne[:,0],'y':pca_tsne[:,1],'label':subset_y})
+st.write('MNIST embedding visualization experiment')    
+mnist_test = torch.utils.data.DataLoader(get_MNIST(), batch_size=b_size)
+vis_data = get_PCATSNE(mnist_test)
 
 ch_alt = alt.Chart(vis_data).mark_point().encode(
             x='x', 
