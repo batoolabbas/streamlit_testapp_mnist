@@ -25,8 +25,10 @@ def get_PCATSNE(data_loader,b_size=64,subset=1000,pca_components=50):
     return vis_data
 
 st.write('MNIST embedding visualization experiment')    
+
+b_size=64
 mnist_test = torch.utils.data.DataLoader(get_MNIST(), batch_size=b_size)
-vis_data = get_PCATSNE(mnist_test)
+vis_data = get_PCATSNE(mnist_test,b_size=b_size)
 
 ch_alt = alt.Chart(vis_data).mark_point().encode(
             x='x', 
