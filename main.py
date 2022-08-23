@@ -36,8 +36,8 @@ def plot_tsne(b_size,cn):
     ch_plt = sns.scatterplot(data=vis_data,x="x",y="y",hue="label",ax=ax)
     st.pyplot(fig, use_container_width=True)
 
-b_size=64
-cn = st.sidebar.slider("PCA components",min_value=1,max_value=28*28,value=500)
+b_size=st.sidebar.slider("Number of samples", min_value=1,max_value=len(mnist_test),value=128)
+cn = st.sidebar.slider("Number of features",min_value=1,max_value=28*28,value=500)
 plot_tsne(b_size=b_size,cn=cn)
 
 st.sidebar.button("Plot",on_click=plot_tsne,args=(b_size,cn))
