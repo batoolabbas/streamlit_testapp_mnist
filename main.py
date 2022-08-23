@@ -14,7 +14,7 @@ import numpy as np
 def get_model(idx=0):
     modelname, pretrained = open_clip.list_pretrained()[idx]
     model, train_preprocess, val_preprocess = open_clip.create_model_and_transforms(modelname, pretrained=pretrained)
-    return model.cuda(), val_preprocess
+    return model, val_preprocess
 
 @st.cache
 def get_MNIST(train=False):
@@ -36,7 +36,7 @@ def get_processed(b_size=32):
     for x,y in iter(data_loader):
         if len(label) >= 5000:
             break
-        x = x.cuda()
+        #x = x.cuda()
         x = model.visual(x)
         y = y.view((-1))
         img.extend(x.detach().cpu().view((b_size,-1)).numpy())
