@@ -47,8 +47,8 @@ def get_TSNE(b_size=64,subset=10000):
 st.write('MNIST embedding visualization experiment')    
 b_size=128
 cn = 50
-
-vis_data = get_TSNE(b_size=b_size,subset=10000)
+subset= 60000
+vis_data = get_TSNE(b_size=b_size,subset=subset)
 
 fig = plt.figure()
 ax = fig.subplots()
@@ -57,7 +57,7 @@ ch_plt.set(title='TSNE without PCA')
 print('sending to streamlit')
 st.pyplot(fig, use_container_width=True)
 
-vis_data = get_PCATSNE(b_size=b_size,subset=10000,pca_components=cn)
+vis_data = get_PCATSNE(b_size=b_size,subset=subset,pca_components=cn)
 fig = plt.figure()
 ax = fig.subplots()
 ch_plt = sns.scatterplot(data=vis_data,x="x",y="y",hue="label",ax=ax,palette='Spectral')
