@@ -5,3 +5,4 @@ torchvision
 sklearn
 matplotlib
 seaborn
+open_clip
