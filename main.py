@@ -39,7 +39,7 @@ def plot_tsne(ds,b_size,cn):
 ds = get_MNIST()
 b_size=st.sidebar.slider("Number of samples", min_value=1,max_value=len(ds),value=128)
 cn = st.sidebar.slider("Number of features",min_value=1,max_value=min(b_size,28*28),value=b_size)
-plot_tsne(b_size=b_size,cn=cn)
+plot_tsne(ds,b_size=b_size,cn=cn)
 
 st.sidebar.button("Plot",on_click=plot_tsne,args=(b_size,cn))
 
