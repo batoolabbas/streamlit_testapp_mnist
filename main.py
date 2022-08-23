@@ -37,10 +37,9 @@ def plot_tsne(b_size,cn):
     ch_plt = sns.scatterplot(data=vis_data,x="x",y="y",hue="label",ax=ax,palette='spectral')
     return fig
 
-b_size=128#st.sidebar.slider("Number of samples", min_value=1,max_value=10000,value=128)
-cn = None#st.sidebar.slider("Number of features",min_value=1,max_value=28*28,value=b_size)
+b_size=128
+cn = 100
 
-#if st.sidebar.button("Plot"):
 fig = plot_tsne(b_size=b_size,cn=cn)
 st.pyplot(fig, use_container_width=True)
 
