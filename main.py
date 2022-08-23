@@ -5,7 +5,7 @@ from torchvision.datasets import MNIST
 from sklearn.manifold import TSNE
 from sklearn.decomposition import PCA
 import pandas as pd
-import matplotlib.pylot as plt
+import matplotlib.pyplot as plt
 import seaborn as sns
 
 @st.cache
