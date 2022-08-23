@@ -5,7 +5,8 @@ from torchvision.datasets import MNIST
 from sklearn.manifold import TSNE
 from sklearn.decomposition import PCA
 import pandas as pd
-import altair as alt
+import matplotlib.pylot as plt
+import seaborn as sns
 
 @st.cache
 def get_MNIST(train=False):
@@ -30,10 +31,7 @@ b_size=64
 mnist_test = torch.utils.data.DataLoader(get_MNIST(), batch_size=b_size)
 vis_data = get_PCATSNE(mnist_test,b_size=b_size)
 
-ch_alt = alt.Chart(vis_data).mark_point().encode(
-            x='x', 
-            y='y',
-            color=alt.Color('label:O')
-        ).properties(width=800, height=800)
-st.altair_chart(ch_alt, use_container_width=True)
+fig, ax = plt.figure()
+ch_plt = sns.scatter(data=vis_data,x="x",y="y",hue="label",ax=ax)
+st.pyplot(fig, use_container_width=True)
 
