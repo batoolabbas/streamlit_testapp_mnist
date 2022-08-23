@@ -24,41 +24,49 @@ def get_MNIST(train=False):
 @st.cache
 def get_loader(batch_size=32):
     ds = get_MNIST()
-    return torch.utils.data.DataLoader(ds, batch_size=batch_size,num_workers=4)
+    return torch.utils.data.DataLoader(ds, batch_size=batch_size,num_workers=2)
 
 @st.cache
-def get_processed(b_size=32):
-    model, _ = get_model()
-    print("got model")
-    data_loader = get_loader(b_size)
-    print("got loader")
+def get_processed(b_size=5000,process=True):
     img, label = [],[]
-    for x,y in iter(data_loader):
-        if len(label) >= 5000:
-            break
-        #x = x.cuda()
-        x = model.visual(x)
-        y = y.view((-1))
-        img.extend(x.detach().cpu().view((b_size,-1)).numpy())
-        label.extend(y.detach().numpy())
-        del x
-    print("encoded features")
+
+    if process:
+        
+        model, _ = get_model()
+        print("got model")
+        mini_b = 32
+        data_loader = get_loader(mini_b)
+        print("got loader")
+        for x,y in iter(data_loader):
+            if len(label) >= b_size:
+                break
+            x = model.visual(x).detach()
+            y = y.view((-1))
+            img.extend(x.view((mini_b,-1)).numpy())
+            label.extend(y.numpy())
+            del x
+        print("encoded features")
+    else:
+        data_loader = get_loader(b_size)
+        img, label = next(iter(data_loader))
+        img = img.view((b_size,-1))
+        label = label.view((-1))
+        
     return np.array(img), np.array(label)
     
     
 @st.cache
-def get_PCATSNE(b_size=32,pca_components=50):
-    subset_x, subset_y = get_processed()
+def get_PCATSNE(b_size=5000,pca_components=50,process=True):
+    subset_x, subset_y = get_processed(process=process)
     pca_k = PCA(n_components=pca_components).fit_transform(subset_x)
-    print(type(pca_k),np.shape(pca_k))
     pca_tsne = TSNE(random_state=42,n_components=2,verbose=True,perplexity=40, n_iter=300).fit_transform(pca_k)
     print('fitted transform now creating df')
     vis_data = pd.DataFrame(data={'x':pca_tsne[:,0],'y':pca_tsne[:,1],'label':subset_y})
     return vis_data
 
 @st.cache
-def get_TSNE(b_size=32):
-    subset_x, subset_y = get_processed()
+def get_TSNE(b_size=5000,process=True):
+    subset_x, subset_y = get_processed(process=process)
     tsne = TSNE(random_state=42,n_components=2,verbose=True,perplexity=40, n_iter=300).fit_transform(subset_x)
     print('fitted transform now creating df')
     vis_data = pd.DataFrame(data={'x':tsne[:,0],'y':tsne[:,1],'label':subset_y})
@@ -66,30 +74,29 @@ def get_TSNE(b_size=32):
 
 
 st.write('MNIST embedding visualization experiment')    
-b_size=32
-vis_data = get_TSNE(b_size=b_size)
+b_size=1000
 
+#vis_data = get_TSNE(b_size=b_size)
+# fig = plt.figure()
+# ax = fig.subplots()
+# ch_plt = sns.scatterplot(data=vis_data,x="x",y="y",hue="label",ax=ax,palette='Spectral')
+# ch_plt.set(title='TSNE without PCA')
+# print('sending to streamlit')
+# st.pyplot(fig, use_container_width=True)
+
+
+vis_data = get_PCATSNE(b_size=b_size,pca_components=100,process=False)
 fig = plt.figure()
 ax = fig.subplots()
 ch_plt = sns.scatterplot(data=vis_data,x="x",y="y",hue="label",ax=ax,palette='Spectral')
-ch_plt.set(title='TSNE without PCA')
+ch_plt.set(title='TSNE after PCA of raw MNIST embeddings to 100 components')
 print('sending to streamlit')
 st.pyplot(fig, use_container_width=True)
 
-
-vis_data = get_PCATSNE(b_size=b_size,pca_components=100)
+vis_data = get_PCATSNE(b_size=b_size,pca_components=100,process=True)
 fig = plt.figure()
 ax = fig.subplots()
 ch_plt = sns.scatterplot(data=vis_data,x="x",y="y",hue="label",ax=ax,palette='Spectral')
-ch_plt.set(title='TSNE after PCA to 100 components')
-print('sending to streamlit')
-st.pyplot(fig, use_container_width=True)
-
-
-vis_data = get_PCATSNE(b_size=b_size,pca_components=25)
-fig = plt.figure()
-ax = fig.subplots()
-ch_plt = sns.scatterplot(data=vis_data,x="x",y="y",hue="label",ax=ax,palette='Spectral')
-ch_plt.set(title='TSNE after PCA to 25 components')
+ch_plt.set(title='TSNE after PCA of encoded MNIST embeddings to 100 components')
 print('sending to streamlit')
 st.pyplot(fig, use_container_width=True)
